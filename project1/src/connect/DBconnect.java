@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBconnect {
-	public static void getConnection() {
+	public static Connection getConnection() {
 		Connection con = null;
 		
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -22,7 +22,8 @@ public class DBconnect {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
-		System.out.println("Success");
+		
+		return con;
 	}
 	
 }
