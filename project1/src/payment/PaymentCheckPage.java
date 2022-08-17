@@ -1,6 +1,8 @@
 package payment;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 import connect.DBconnect;
+import movie_login.SignIn;
 
 public class PaymentCheckPage extends JFrame{
 	Connection con = null;
@@ -31,6 +34,10 @@ public class PaymentCheckPage extends JFrame{
 		JPanel container1 = new JPanel();
 		JPanel container2 = new JPanel();
 		JPanel container3 = new JPanel();
+		
+		container1.setBackground(Color.WHITE);
+		container2.setBackground(Color.WHITE);
+		container3.setBackground(Color.WHITE);
 		
 		JLabel jl1 = new JLabel("카드번호 : ");
 		jtf1 = new JTextField(10);
@@ -71,12 +78,23 @@ public class PaymentCheckPage extends JFrame{
 						int res = insert();
 						if(res>0) {
 							JOptionPane.showMessageDialog(null, "결제 완료");
-							new TestMainPage();// 메인 페이지 클래스로 이동
+							//new TestMainPage();// 메인 페이지 클래스로 이동
+							EventQueue.invokeLater(new Runnable() {
+								public void run() {
+									try {
+										SignIn window = new SignIn();
+										window.frame.setVisible(true);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							});
 							setVisible(false);		
 						}else {
 							JOptionPane.showMessageDialog(null, "error");
 						}
-					
+					}else {
+						JOptionPane.showMessageDialog(null, "잘못된 정보를 입력했습니다.");
 					}
 				}
 			}

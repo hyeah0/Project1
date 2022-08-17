@@ -1,6 +1,8 @@
 package payment;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,8 +12,13 @@ import java.sql.*;
 import javax.swing.*;
 
 import connect.DBconnect;
+import movie_login.SignIn;
 
 public class PaymentPage extends JFrame{
+	
+	ImageIcon icon_back;
+	ImageIcon icon_cgv;
+	
 	Connection con = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
@@ -29,18 +36,35 @@ public class PaymentPage extends JFrame{
 	
 	public PaymentPage() {
 		
+
 		setTitle("결제 페이지");
 
 		JPanel container1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel container2 = new JPanel();
 		JPanel container3 = new JPanel();
+		
+		container1.setBackground(Color.WHITE);
+		container2.setBackground(Color.WHITE);
+		container3.setBackground(Color.WHITE);
+		
 		//상단
-		JButton button1 = new JButton("뒤로가기");
+		icon_back = new ImageIcon("src/img/back3.png");
+		JButton button1 = new JButton();
+		button1.setBounds(100, 100, 100, 100);
+		button1.setIcon(icon_back);
+		button1.setBorder(null);
+		//button1.setBackground(new Color(0, 0, 0, 0));
+		button1.setContentAreaFilled(false);
+		
 		
 		//중단
 		select();//임시
 		//가능하면 좌석선택페이지에서 저장된 정보를 가져오는게 좋을 것 같다.
 
+//		icon_cgv = new ImageIcon("src/img/tmplogo.png");
+//		JLabel jimg = new JLabel();
+//		jimg.setIcon(icon_cgv);
+		
 		JLabel jl1 = new JLabel("<html><body><center>" + "영화관람권<br>" + "<p style=\"font-size:30px\">"+movieName
 				+"</p><br>"+seatDate+"<br>"+seatNum+"<br>"+seatPrice+"<br>"+cinemaName
 						+ "</center></body></html>");
@@ -49,7 +73,7 @@ public class PaymentPage extends JFrame{
 		//하단
 		JButton button2 = new JButton("결  제");
 		
-		container1.add(button1);container1.add(jl1);
+		container1.add(button1);
 		
 		container2.add(jl1);
 		
@@ -58,6 +82,8 @@ public class PaymentPage extends JFrame{
 		add(container1,BorderLayout.NORTH);
 		add(container2,BorderLayout.CENTER);
 		add(container3,BorderLayout.SOUTH);
+		
+		
 		
 		setBounds(100,100,700,900);
 		
@@ -69,6 +95,7 @@ public class PaymentPage extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				new TestMainPage();// 좌석선택페이지 클래스로 이동
 				setVisible(false);
 			
@@ -79,9 +106,6 @@ public class PaymentPage extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					
-					
-				JOptionPane.showMessageDialog(null, movieName + cinemaName + seatNum);
 				new PaymentCheckPage();// 카드번호 확인 페이지로 이동
 				setVisible(false);
 			
@@ -92,10 +116,10 @@ public class PaymentPage extends JFrame{
 	
 	void select() {
 		con = DBconnect.getConnection();
-		sql = "SELECT mv.movieName, s.seatDate, s.seatNum,s.seatPrice,cn.cinemaName "
+		sql = "SELECT mv.movieName, cn.cinemaDate, s.seatNum,s.seatPrice,cn.cinemaName "
 				+ "FROM seat_info s JOIN cinema_info cn ON s.cinemaNum = cn.cinemaNum "
 				+ "JOIN movie_info mv ON cn.movieNum = mv.movieNum ";
-		//"WHERE s.seatNum = ? AND cn.cinemaNum = ?"
+				//+ "WHERE s.seatNum = ? AND cn.cinemaNum = ?";
 		
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -134,9 +158,5 @@ public class PaymentPage extends JFrame{
 //		}
 //	}
 	
-	public static void main(String[] args) {
-		new PaymentPage();
-		
-	}
 
 }
