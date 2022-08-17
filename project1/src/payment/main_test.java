@@ -3,8 +3,9 @@ package payment;
 public class main_test {
 
 	public static void main(String[] args) {
-		//°áÁ¦¸¸ µû·Î ½ÇÇàÇØ¼­ Å×½ºÆ®
+		//ê²°ì œë§Œ ë”°ë¡œ ì‹¤í–‰í•´ì„œ í…ŒìŠ¤íŠ¸
 		new PaymentPage();
+		//í…ŒìŠ¤íŠ¸
 	}
 
 }
